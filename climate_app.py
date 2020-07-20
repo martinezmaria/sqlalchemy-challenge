@@ -18,9 +18,6 @@ Base.prepare(engine, reflect=True)
 Measurement = Base.classes.measurement
 Station = Base.classes.station
 
-# Variables, dictionaries:
-start = '2016-08-23'
-
 
 # Create app
 app = Flask(__name__)
@@ -55,8 +52,7 @@ def Precipitation():
     all_p_dict = []
     for date, prcp in precipitation_data:
         p_dict = {}
-        p_dict['date'] = date
-        p_dict['precipitation'] = precipitation_data
+        p_dict['date'] = prcp
         all_p_dict.append(p_dict)
     return jsonify(all_p_dict)
 
