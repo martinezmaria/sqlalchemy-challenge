@@ -90,15 +90,48 @@ def temperatures():
 @app.route("/api/v1.0/<start>")
 def start(start):
     session = Session(engine)
-    session.close()
-    return f"Data results here"
+    ttemperatures = session.query(Measurement.date, func.min(Measurement.tobs), func.max(Measurement.tobs), func.avg(Measurement.tobs)).\
+                    filter(Measurement.station == Station.station).\
+                    filter(Measurement.date >= '2016-08-23').\
+                    group_by(Measurement.date).all()
 
+                    
+    session.close()
+    
+    # Convert results to dictionary
+    all_tminmaxavg_dict = []
+    for date, tmin, tmax, tavg in ttemperatures:
+        t_dict = {}
+        t_dict['date'] = date
+        t_dict['tmin'] = tmin
+        t_dict['tmax'] = tmax
+        t_dict['tavg'] = tavg
+        all_tminmaxavg_dict.append(t_dict)
+    return jsonify(all_tminmaxavg_dict)
+
+    
 
 @app.route("/api/v1.0/<start>/<end>")
-def start_end():
-    trip_temps = calc_temps('2014-02-28', '2014-03-05')
-    return jsonify(trip_temps)
+def start_end(start, end):
+    session = Session(engine)
+    trip_temps = session.query(Measurement.date, func.min(Measurement.tobs), func.max(Measurement.tobs), func.avg(Measurement.tobs)).\
+                    filter(Measurement.station == Station.station).\
+                    filter(Measurement.date >= '2014-02-28').\
+                    filter(Measurement.date <= '2014-03-05').\
+                    group_by(Measurement.date).all()
+    session.close()
 
+    # Convert results to dictionary
+    all_triptemps_dict = []
+    for date, tmin, tmax, tavg in trip_temps:
+        tr_dict = {}
+        tr_dict['date'] = date
+        tr_dict['tmin'] = tmin
+        tr_dict['tmax'] = tmax
+        tr_dict['tavg'] = tavg
+        all_triptemps_dict.append(tr_dict)
+    return jsonify(all_triptemps_dict)
+    
 
 
 # Define main behavior
