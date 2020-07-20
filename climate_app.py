@@ -37,8 +37,8 @@ def home():
         f"Precipitation:  /api/v1.0/precipitation<br/>"
         f"Stations:   /api/v1.0/stations<br/>"
         f"Temperatures:  /api/v1.0/tobs<br/>"
-        f"Trip Start Date: /api/v1.0/<start><br/>"
-        f"Trip Start-End Date:  /api/v1.0/<start>/<end>"
+        f"Trip Start Date: /api/v1.0/start<br/>"
+        f"Trip Start-End Date:  /api/v1.0/start/end"
     )
 
 
